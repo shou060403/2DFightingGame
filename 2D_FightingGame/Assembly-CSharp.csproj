@@ -51,8 +51,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
      <Compile Include="Assets\Scripts\ColliderEvent.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
+=======
+     <Compile Include="Assets\Scripts\PlayerController.cs" />
+     <Compile Include="Assets\Scripts\SceneManagement.cs" />
+>>>>>>> SceneManager
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Users/s162211/Desktop/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
