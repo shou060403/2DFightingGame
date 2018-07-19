@@ -164,6 +164,9 @@
 Assets/Scripts/ColliderEvent.cs
 Assets/Scripts/PlayerController.cs
 Assets/Scripts/SceneManagement.cs
+Assets/Scripts/UIScript/GetGameScript.cs
+Assets/Scripts/UIScript/HPDirectorScript.cs
+Assets/Scripts/UIScript/TimerScript.cs
 -r:C:\Users\s162211\Desktop\Editor\Data\Mono\lib\mono\unity\System.Runtime.Serialization.dll
 -r:C:\Users\s162211\Desktop\Editor\Data\Mono\lib\mono\unity\System.Xml.Linq.dll
 -r:C:\Users\s162211\Desktop\Editor\Data\Mono\lib\mono\unity\UnityScript.dll
