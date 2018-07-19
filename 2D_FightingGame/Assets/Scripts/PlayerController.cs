@@ -50,6 +50,8 @@ public class PlayerController : MonoBehaviour {
         float y = 0;
         bool punchKey = false;
         bool kickKey = false;
+        float punchAxis = 0.0f;
+        float kickAxis = 0.0f;
 
         //フリーズしている状態だったらキー動作をしない
         if (!freeze)
@@ -62,6 +64,11 @@ public class PlayerController : MonoBehaviour {
             punchKey = Input.GetKeyDown(KeyCode.Z);
             //キック
             kickKey = Input.GetKeyDown(KeyCode.X);
+            //パンチ
+            punchAxis = Input.GetAxis("Punch");
+            //キック
+            kickAxis = Input.GetAxis("Kick");
+
         }
         else
         {
@@ -93,8 +100,8 @@ public class PlayerController : MonoBehaviour {
                 if (y > 0) state = "Jump";
                 if (y < 0) state = "Crouch";
                 //パンチ、キックの入力
-                if (punchKey && !animator.GetBool("Punch") && !animator.GetBool("Kick")) state = "FCPunch";
-                if (kickKey && !animator.GetBool("Punch") && !animator.GetBool("Kick")) state = "FCKick";
+                if (punchKey || punchAxis!=0 && !animator.GetBool("Punch") && !animator.GetBool("Kick")) state = "FCPunch";
+                if (kickKey || kickAxis!=0 && !animator.GetBool("Punch") && !animator.GetBool("Kick")) state = "FCKick";
 
                 int move = 0;
                 if (x > 0) move = 1;
@@ -111,8 +118,8 @@ public class PlayerController : MonoBehaviour {
                 gameObject.transform.position = new Vector3(gameObject.transform.position.x, -4.2f, gameObject.transform.position.z);
                 //キック
                 //if (Input.GetKeyDown(KeyCode.Z) && !animator.GetBool("Punch") && !animator.GetBool("Kick")) state = "FCPunch";
-                if (punchKey && !animator.GetBool("Punch") && !animator.GetBool("Kick")) state = "FCKick";
-                if (kickKey && !animator.GetBool("Punch") && !animator.GetBool("Kick")) state = "FCKick";
+                if (punchKey || punchAxis!=0 && !animator.GetBool("Punch") && !animator.GetBool("Kick")) state = "FCKick";
+                if (kickKey || kickAxis!=0 && !animator.GetBool("Punch") && !animator.GetBool("Kick")) state = "FCKick";
 
                 if (y > -0.5f) state = "Stand";                
                 break;
@@ -175,13 +182,13 @@ public class PlayerController : MonoBehaviour {
             ySpeed = 0.3f;
 
             //ジャンプキック
-            if (punchKey && !animator.GetBool("Punch") && !animator.GetBool("Kick"))
+            if (punchKey || punchAxis!=0 && !animator.GetBool("Punch") && !animator.GetBool("Kick"))
             {
                 //animator.SetBool("Punch", true);
                 animator.SetBool("Kick", true);
             }
             //ジャンプキック
-            if (kickKey && !animator.GetBool("Punch") && !animator.GetBool("Kick"))
+            if (kickKey || kickAxis!=0 && !animator.GetBool("Punch") && !animator.GetBool("Kick"))
             {
                 animator.SetBool("Kick", true);
             }
