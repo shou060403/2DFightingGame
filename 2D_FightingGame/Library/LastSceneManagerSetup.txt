@@ -1,8 +1,4 @@
 sceneSetups:
-<<<<<<< HEAD
-- path: Assets/Scene/PlayScene.unity
-=======
-- path: Assets/Scene/TitleScene.unity
->>>>>>> SceneManager
+- path: Assets/Scene/game.unity
   isLoaded: 1
   isActive: 1
