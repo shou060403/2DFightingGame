@@ -57,8 +57,99 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update()
 	{
+<<<<<<< HEAD
 
 		text.text = "";
+=======
+        //キーの定義
+        float x = 0;
+        float y = 0;
+        bool punchKey = false;
+        bool kickKey = false;
+        float punchAxis = 0.0f;
+        float kickAxis = 0.0f;
+
+        //フリーズしている状態だったらキー動作をしない
+        if (!freeze)
+        {
+            // 右・左
+            x = Input.GetAxisRaw("Horizontal");
+            // 上・下
+            y = Input.GetAxisRaw("Vertical");
+            //パンチ
+            punchKey = Input.GetKeyDown(KeyCode.Z);
+            //キック
+            kickKey = Input.GetKeyDown(KeyCode.X);
+            //パンチ
+            punchAxis = Input.GetAxis("Punch");
+            //キック
+            kickAxis = Input.GetAxis("Kick");
+
+        }
+        else
+        {
+            //硬直
+            recoveryCounter++;
+            int recovery = 0;
+            switch(recoveryState)
+            {
+                case "JumpEnd":
+                    recovery = landingRecovery;
+                    break;
+            }
+            if(recoveryCounter > recovery)
+            {
+                freeze = false;
+                recoveryCounter = 0;
+            }
+        }
+
+        //動作
+        switch (state)
+        {
+            case "Stand":
+                // 移動する向きを求める
+                finalMove = new Vector3(x, 0, 0).normalized * speed;
+                nowGravity = 0;
+                gameObject.transform.position = new Vector3(gameObject.transform.position.x, -4.2f, gameObject.transform.position.z);
+                //ジャンプ、しゃがみ
+                if (y > 0) state = "Jump";
+                if (y < 0) state = "Crouch";
+                //パンチ、キックの入力
+                if (punchKey || punchAxis!=0 && !animator.GetBool("Punch") && !animator.GetBool("Kick")) state = "FCPunch";
+                if (kickKey || kickAxis!=0 && !animator.GetBool("Punch") && !animator.GetBool("Kick")) state = "FCKick";
+
+                int move = 0;
+                if (x > 0) move = 1;
+                if (x < 0) move = -1;
+
+                animator.SetInteger("Move", move);
+                animator.SetBool("Crouch", false);
+                animator.SetBool("Punch", false);
+                animator.SetBool("Kick", false);
+                break;
+            case "Crouch":
+                animator.SetBool("Crouch", true);
+                finalMove = new Vector3(0, 0, 0);
+                gameObject.transform.position = new Vector3(gameObject.transform.position.x, -4.2f, gameObject.transform.position.z);
+                //キック
+                //if (Input.GetKeyDown(KeyCode.Z) && !animator.GetBool("Punch") && !animator.GetBool("Kick")) state = "FCPunch";
+                if (punchKey || punchAxis!=0 && !animator.GetBool("Punch") && !animator.GetBool("Kick")) state = "FCKick";
+                if (kickKey || kickAxis!=0 && !animator.GetBool("Punch") && !animator.GetBool("Kick")) state = "FCKick";
+
+                if (y > -0.5f) state = "Stand";                
+                break;
+            case "Jump":
+                jumpCount++;
+                break;
+            //立ち、しゃがみパンチ
+            case "FCPunch":
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1 && animator.GetBool("Punch") && !animator.GetBool("Kick"))
+                {
+                    animator.SetBool("Punch", false);
+                    state = "Stand";
+                }
+>>>>>>> 585e342f452ca0b66b42608afe31891f82c5f15a
 
 		//キーの定義
 		float x = 0;
@@ -199,6 +290,7 @@ public class PlayerController : MonoBehaviour {
 		bool jumping = gameObject.transform.position.y >= -4.3f && state == "Jump";
 		if (jumping) nowGravity -= gravity;
 
+<<<<<<< HEAD
 		//ジャンプしたときのアニメ、ジャンプする動作
 		if (state == "Jump")
 		{
@@ -297,6 +389,16 @@ public class PlayerController : MonoBehaviour {
             state = "Special";
             history.Clear();
             for (int i = 0; i < 10; i++)
+=======
+            //ジャンプキック
+            if (punchKey || punchAxis!=0 && !animator.GetBool("Punch") && !animator.GetBool("Kick"))
+            {
+                //animator.SetBool("Punch", true);
+                animator.SetBool("Kick", true);
+            }
+            //ジャンプキック
+            if (kickKey || kickAxis!=0 && !animator.GetBool("Punch") && !animator.GetBool("Kick"))
+>>>>>>> 585e342f452ca0b66b42608afe31891f82c5f15a
             {
                 history.Add("");
             }
