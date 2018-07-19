@@ -400,6 +400,9 @@ MonoBehaviour:
   speed: 0.1
   gravity: 0.01
   state: Stand
+  landingRecovery: 3
+  jumpingRecovery: 3
+  hitStop: 3
 --- !u!61 &2118730349
 BoxCollider2D:
   m_ObjectHideFlags: 0
