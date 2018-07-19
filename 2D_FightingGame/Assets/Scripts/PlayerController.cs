@@ -34,12 +34,12 @@ public class PlayerController : MonoBehaviour {
     int jumpTime = 10;
     int jumpCount = 0;
 
-    new BoxCollider2D collider;
+    //new BoxCollider2D collider;
 
     // Use this for initialization
     void Start () {
         animator = GetComponent<Animator>();
-        collider = GetComponent<BoxCollider2D>();
+        //collider = GetComponent<BoxCollider2D>();
     }
 
 	// Update is called once per frame
@@ -143,17 +143,17 @@ public class PlayerController : MonoBehaviour {
                 break;
         }
 
-        //しゃがんだ時にcollider編集
-        if (state == "Crouch")
-        {
-            collider.offset = new Vector2(0, 0.18f);
-            collider.size = new Vector2(0.38f, 0.45f);
-        }
-        else
-        {
-            collider.offset = new Vector2(0, 0.4f);
-            collider.size = new Vector2(0.38f, 0.9f);
-        }
+        ////しゃがんだ時にcollider編集
+        //if (state == "Crouch")
+        //{
+        //    collider.offset = new Vector2(0, 0.18f);
+        //    collider.size = new Vector2(0.38f, 0.45f);
+        //}
+        //else
+        //{
+        //    collider.offset = new Vector2(0, 0.4f);
+        //    collider.size = new Vector2(0.38f, 0.9f);
+        //}
 
         //ジャンプしているときに地面に触っておらず一定時間経過していたら終了
         bool jumpEnd = gameObject.transform.position.y <= -4.2f && state == "Jump" && jumpCount > jumpTime;
