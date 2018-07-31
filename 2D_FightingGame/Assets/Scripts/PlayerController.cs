@@ -40,6 +40,8 @@ public class PlayerController : MonoBehaviour
     int jumpTime = 10;
     int jumpCount = 0;
 
+    public int damage = 0;
+
     public int direction = 0;
     public Vector3 enemyPos = new Vector3(0, 0, 0);
 
@@ -162,6 +164,7 @@ public class PlayerController : MonoBehaviour
             case "Stand":
                 transform.localScale = new Vector3(direction * 5, 5, 5);
                 nowGravity = 0;
+                damage = 0;
                 gameObject.transform.position = new Vector3(gameObject.transform.position.x, -4.2f, gameObject.transform.position.z);
                 //ジャンプ、しゃがみ
                 if (inputDKey >= 7) state = "Jump";
@@ -215,6 +218,7 @@ public class PlayerController : MonoBehaviour
 
                 animator.SetBool("Punch", true);
                 finalMove = new Vector3(0, 0, 0);
+                damage = 30;
                 break;
             //立ち、しゃがみキック
             case "FCKick":
@@ -224,6 +228,7 @@ public class PlayerController : MonoBehaviour
                     state = "Stand";
                 }
 
+                damage = 60;
                 animator.SetBool("Kick", true);
                 finalMove = new Vector3(0, 0, 0);
                 break;
@@ -281,11 +286,13 @@ public class PlayerController : MonoBehaviour
             {
                 //animator.SetBool("Punch", true);
                 animator.SetBool("Kick", true);
+                damage = 50;
             }
             //ジャンプキック
             if (kickKey && !animator.GetBool("Punch") && !animator.GetBool("Kick"))
             {
                 animator.SetBool("Kick", true);
+                damage = 50;
             }
         }
         else
