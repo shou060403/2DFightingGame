@@ -57,6 +57,7 @@
      <Compile Include="Assets\Scripts\UIScript\GetGameScript.cs" />
      <Compile Include="Assets\Scripts\UIScript\HPDirectorScript.cs" />
      <Compile Include="Assets\Scripts\UIScript\TimerScript.cs" />
+     <Compile Include="Assets\TextGenerator.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Users/s162211/Desktop/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
