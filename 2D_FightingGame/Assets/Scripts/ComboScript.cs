@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ColliderEvent : MonoBehaviour {
+public class ComboScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
