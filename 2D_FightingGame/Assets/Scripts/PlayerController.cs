@@ -218,7 +218,7 @@ public class PlayerController : MonoBehaviour
 
                 animator.SetBool("Punch", true);
                 finalMove = new Vector3(0, 0, 0);
-                damage = 30;
+                damage = 300;
                 break;
             //立ち、しゃがみキック
             case "FCKick":
@@ -228,7 +228,7 @@ public class PlayerController : MonoBehaviour
                     state = "Stand";
                 }
 
-                damage = 60;
+                damage = 600;
                 animator.SetBool("Kick", true);
                 finalMove = new Vector3(0, 0, 0);
                 break;
@@ -286,13 +286,13 @@ public class PlayerController : MonoBehaviour
             {
                 //animator.SetBool("Punch", true);
                 animator.SetBool("Kick", true);
-                damage = 50;
+                damage = 500;
             }
             //ジャンプキック
             if (kickKey && !animator.GetBool("Punch") && !animator.GetBool("Kick"))
             {
                 animator.SetBool("Kick", true);
-                damage = 50;
+                damage = 500;
             }
         }
         else

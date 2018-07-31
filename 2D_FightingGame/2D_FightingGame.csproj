@@ -233,6 +233,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\AnimScript\ColliderEvent.cs" />
     <Compile Include="Assets\Scripts\ComboScript.cs" />
+    <Compile Include="Assets\Scripts\GameDirector.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\SceneManagement.cs" />
     <Compile Include="Assets\Scripts\UIScript\GetGameScript.cs" />

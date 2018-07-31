@@ -526,6 +526,67 @@ public class ColliderEvent : MonoBehaviour {
         AtkColliderActive();
     }
 
+    //--------------------------------
+    //ジャンプキック状態あたり判定1
+    //--------------------------------
+    void JumpKickCollider1()
+    {
+        //くらい判定
+        HitColliderActive();
+
+        //攻撃判定
+        AtkColliderActive();
+
+        //攻撃判定
+        AtkCollider[8].SetActive(true);
+        AtkCollider[9].SetActive(true);
+    }
+
+    //--------------------------------
+    //ジャンプキック状態あたり判定2
+    //--------------------------------
+    void JumpKickCollider2()
+    {
+        //くらい判定
+        HitColliderActive();
+
+        //攻撃判定
+        AtkColliderActive();
+
+        //攻撃判定
+        AtkCollider[10].SetActive(true);
+        AtkCollider[11].SetActive(true);
+    }
+
+    //--------------------------------
+    //ジャンプキック状態あたり判定3
+    //--------------------------------
+    void JumpKickCollider3()
+    {
+        //くらい判定
+        HitColliderActive();
+
+        //攻撃判定
+        AtkColliderActive();
+
+        //攻撃判定
+        AtkCollider[12].SetActive(true);
+        AtkCollider[13].SetActive(true);
+    }
+
+    //--------------------------------
+    //ジャンプキック状態
+    //--------------------------------
+    void JumpKickColliderNone()
+    {
+        //くらい判定
+        HitColliderActive();
+
+        //攻撃判定
+        AtkColliderActive();
+    }
+
+
     void JumpCollider()
     {
 
@@ -536,7 +597,7 @@ public class ColliderEvent : MonoBehaviour {
     //くらい判定管理関数
     private void HitColliderActive()
     {
-        for (int i = 0; i < HCnum - 1; i++)
+        for (int i = 0; i < HCnum; i++)
         {
             HitCollider[i].SetActive(false);
         }
@@ -545,7 +606,7 @@ public class ColliderEvent : MonoBehaviour {
     //あたり判定管理関数
     private void AtkColliderActive()
     {
-        for (int i = 0; i < ACnum - 1; i++)
+        for (int i = 0; i < ACnum; i++)
         {
             AtkCollider[i].SetActive(false);
         }
