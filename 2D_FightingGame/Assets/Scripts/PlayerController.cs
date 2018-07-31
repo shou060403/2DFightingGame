@@ -40,8 +40,6 @@ public class PlayerController : MonoBehaviour
     int jumpTime = 10;
     int jumpCount = 0;
 
-    public int damage = 0;
-
     public int direction = 0;
     public Vector3 enemyPos = new Vector3(0, 0, 0);
 
@@ -162,7 +160,6 @@ public class PlayerController : MonoBehaviour
         switch (state)
         {
             case "Stand":
-                damage = 0;
                 transform.localScale = new Vector3(direction * 5, 5, 5);
                 nowGravity = 0;
                 gameObject.transform.position = new Vector3(gameObject.transform.position.x, -4.2f, gameObject.transform.position.z);
@@ -216,8 +213,6 @@ public class PlayerController : MonoBehaviour
                     state = "Stand";
                 }
 
-                damage = 30;
-
                 animator.SetBool("Punch", true);
                 finalMove = new Vector3(0, 0, 0);
                 break;
@@ -228,8 +223,6 @@ public class PlayerController : MonoBehaviour
                     animator.SetBool("Kick", false);
                     state = "Stand";
                 }
-
-                damage = 60;
 
                 animator.SetBool("Kick", true);
                 finalMove = new Vector3(0, 0, 0);
@@ -288,13 +281,11 @@ public class PlayerController : MonoBehaviour
             {
                 //animator.SetBool("Punch", true);
                 animator.SetBool("Kick", true);
-                damage = 50;
             }
             //ジャンプキック
             if (kickKey && !animator.GetBool("Punch") && !animator.GetBool("Kick"))
             {
                 animator.SetBool("Kick", true);
-                damage = 50;
             }
         }
         else
@@ -309,6 +300,50 @@ public class PlayerController : MonoBehaviour
         Vector3 finalPos = finalMove + gameObject.transform.position;
         gameObject.transform.position = finalPos;
 
+        ////入力
+        //if(inputDKey != inputDKeyOld)
+        //{
+        //    switch(inputDKey)
+        //    {
+        //        case 1:
+        //            history.RemoveAt(0);
+        //            history.Add("↙");
+        //            break;
+        //        case 2:
+        //            history.RemoveAt(0);
+        //            history.Add("↓");
+        //            break;
+        //        case 3:
+        //            history.RemoveAt(0);
+        //            history.Add("↘");
+        //            break;
+        //        case 4:
+        //            history.RemoveAt(0);
+        //            history.Add("←");
+        //            break;
+        //        case 5:
+        //            //history.RemoveAt(0);
+        //            //history.Add("N");
+        //            break;
+        //        case 6:
+        //            history.RemoveAt(0);
+        //            history.Add("→");
+        //            break;
+        //        case 7:
+        //            history.RemoveAt(0);
+        //            history.Add("↖");
+        //            break;
+        //        case 8:
+        //            history.RemoveAt(0);
+        //            history.Add("↑");
+        //            break;
+        //        case 9:
+        //            history.RemoveAt(0);
+        //            history.Add("↗");
+        //            break;
+
+        //    }
+        //}
         //入力
         switch (inputDKey)
         {
