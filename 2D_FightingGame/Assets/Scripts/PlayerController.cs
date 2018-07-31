@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using GamepadInput;
 
 public class PlayerController : MonoBehaviour
 {
@@ -40,10 +41,12 @@ public class PlayerController : MonoBehaviour
     int jumpTime = 10;
     int jumpCount = 0;
 
+    public int controller = 0;
+
     public int damage = 0;
 
     public int direction = 0;
-    public Vector3 enemyPos = new Vector3(0, 0, 0);
+    GameObject enemy;
 
     public int inputDKey;
     public int inputDKeyOld;
@@ -65,13 +68,16 @@ public class PlayerController : MonoBehaviour
         }
         inputDKey = 5;
         inputDKeyOld = inputDKey;
+        if(controller == 1) enemy = GameObject.Find("player2");
+        else if(controller == 2) enemy = GameObject.Find("player1");
+
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        if (enemyPos.x >= transform.position.x)
+        if (enemy.transform.position.x >= transform.position.x)
         {
             direction = 1;
         }
@@ -92,26 +98,62 @@ public class PlayerController : MonoBehaviour
 
         ////キー操作検知用
         //float a = 0;
-        //if(Input.GetAxisRaw("Horizontal") != 0.0f)
+        //if(Input.GetAxisRaw("Horizontal1P") != 0.0f)
         //{
-        //    a = Input.GetAxis("Horizontal");
+        //    a = Input.GetAxis("Horizontal1P");
         //    int b = 0;
         //}
 
         //フリーズしている状態だったらキー動作をしない
         if (!freeze)
         {
-            // 右・左
-            x = Input.GetAxisRaw("Horizontal");
-            x += Input.GetAxisRaw("HorizontalDPad") * 1000;
-            // 上・下
-            y = Input.GetAxisRaw("Vertical");
-            y += Input.GetAxisRaw("VerticalDPad") * 1000;
+            //// 右・左
+            //x = Input.GetAxisRaw("Horizontal1P");
+            //x += Input.GetAxisRaw("HorizontalDPad1P") * 1000;
+            //// 上・下
+            //y = Input.GetAxisRaw("Vertical1P");
+            //y += Input.GetAxisRaw("VerticalDPad1P") * 1000;
 
-            //パンチ
-            punchKey = Input.GetButtonDown("PunchButton");
-            //キック
-            kickKey = Input.GetButtonDown("KickButton");
+            ////パンチ
+            //punchKey = Input.GetButtonDown("PunchButton1P");
+            ////キック
+            //kickKey = Input.GetButtonDown("KickButton1P");
+
+            if(controller == 1)
+            {
+                // 右・左
+                x = GamePad.GetAxis(GamePad.Axis.LeftStick, GamePad.Index.One).x;
+                x += GamePad.GetAxis(GamePad.Axis.Dpad, GamePad.Index.One).x * 1000;
+                //x = Input.GetAxisRaw("Horizontal1P");
+                //x += Input.GetAxisRaw("HorizontalDPad1P") * 1000;
+                // 上・下
+                y = GamePad.GetAxis(GamePad.Axis.LeftStick, GamePad.Index.One).y;
+                y += GamePad.GetAxis(GamePad.Axis.Dpad, GamePad.Index.One).y * 1000;
+                //y = Input.GetAxisRaw("Vertical1P");
+                //y += Input.GetAxisRaw("VerticalDPad1P") * 1000;
+
+                //パンチ
+                punchKey = GamePad.GetButtonDown(GamePad.Button.A, GamePad.Index.One);
+                //punchKey = Input.GetButtonDown("PunchButton1P");
+                //キック
+                kickKey  = GamePad.GetButtonDown(GamePad.Button.X, GamePad.Index.One);
+                //kickKey = Input.GetButtonDown("KickButton1P");
+            }
+            else if (controller == 2)
+            {
+                // 右・左
+                x = GamePad.GetAxis(GamePad.Axis.LeftStick, GamePad.Index.Two).x;
+                x += GamePad.GetAxis(GamePad.Axis.Dpad, GamePad.Index.Two).x * 1000;
+
+                // 上・下
+                y = GamePad.GetAxis(GamePad.Axis.LeftStick, GamePad.Index.Two).y;
+                y += GamePad.GetAxis(GamePad.Axis.Dpad, GamePad.Index.Two).y * 1000;
+
+                //パンチ
+                punchKey = GamePad.GetButtonDown(GamePad.Button.A, GamePad.Index.Two);
+                //キック
+                kickKey = GamePad.GetButtonDown(GamePad.Button.X, GamePad.Index.Two);
+            }
 
             if (direction == 1)
             {
