@@ -10,17 +10,23 @@ public class HPDirectorScript : MonoBehaviour {
     [SerializeField]
     Image dmageImage;
 
-    private int maxHP;
+    [SerializeField]
+    private int maxHP = 10000;
     private int nowHP;
-    private int moveHP;
+    [SerializeField]
+    private int moveHP = 10000;
 
+    [SerializeField]
+    private GameObject opponent;
+    PlayerController script;
+
+    public bool hitFlag = false;
 
 	// Use this for initialization
 	void Start ()
     {
-        maxHP = 1000;
-        moveHP = 1000;
         nowHP = maxHP;
+        script = opponent.GetComponent<PlayerController>();
 	}
 
     void hitDmage(int dmage)
@@ -32,11 +38,21 @@ public class HPDirectorScript : MonoBehaviour {
         hpImage.transform.localScale = new Vector3(HPgage, 1, 1);
     }
 
-    void moveDmage()
+    private void moveDmage()
     {
+        //HPが減っているなら
         if(nowHP<moveHP)
         {
-            moveHP -= Mathf.FloorToInt(maxHP * Time.deltaTime * 0.2f);
+            if (nowHP > 0)
+            {
+                //時間差で赤ゲージを減らす
+                moveHP -= Mathf.FloorToInt(maxHP * Time.deltaTime * 0.2f);
+            }
+            else
+            {
+                //HPが0になったら赤ゲージを消す
+                moveHP = 0;
+            }
             moveHP = Mathf.Clamp(moveHP, 0, maxHP);
             float dmageGage = (float)moveHP / maxHP;
 
@@ -44,11 +60,24 @@ public class HPDirectorScript : MonoBehaviour {
         }
     }
 
-	// Update is called once per frame
-	void Update ()
+    //攻撃を食らったなら
+    void OnTriggerEnter2D(Collider2D collision)
     {
+        //サンドバッグなら(仮※仕様によって要変更)
+        if (this.gameObject.name == "Sandbag")
+        {
+            if (collision.gameObject.tag == "Attack1")
+            {
+                hitFlag = true;
+                hitDmage(script.damage);
+            }
+        }
+    }
 
-
+    // Update is called once per frame
+    void Update ()
+    {
+        hitFlag = false;
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             hitDmage(100);
@@ -91,5 +120,30 @@ public class HPDirectorScript : MonoBehaviour {
         }
 
         moveDmage();
+    }
+
+    public int GetNowHP()
+    {
+        return nowHP;
+    }
+
+    //ゲージ取得関数
+    public Vector3 HPScale
+    {
+        get { return hpImage.transform.localScale; }
+        set { hpImage.transform.localScale = value; }
+    }
+
+    public Vector3 DamageScale
+    {
+        get { return dmageImage.transform.localScale; }
+        set { dmageImage.transform.localScale = value; }
+    }
+
+    //初期化関数
+    public void Initialise()
+    {
+        moveHP = 10000;
+        nowHP = maxHP;
     }
 }

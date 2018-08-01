@@ -8,8 +8,8 @@ public class GetGameScript : MonoBehaviour {
     [SerializeField]
     private Image gameFub;
 
-    Vector3 fubTranse1 = new Vector3(-65, 85, 0);
-    Vector3 fubTranse2 = new Vector3(55, 85, 0);
+    Vector3 fubTranse1 = new Vector3(-140, 110, 0);
+    Vector3 fubTranse2 = new Vector3(140, 110, 0);
 
     //ラウンド数
     [SerializeField]
@@ -23,7 +23,7 @@ public class GetGameScript : MonoBehaviour {
 
     int wins = 0;
     [SerializeField]
-    int interval = 20;
+    int interval = 30;
 
 	// Use this for initialization
 	void Start ()
@@ -61,6 +61,7 @@ public class GetGameScript : MonoBehaviour {
             for (int i = 0; i < gameNum; i++)
             {
                 games[i] = (Image)Instantiate(gameFub, initPos - new Vector3(i * interval, 0, 0), gameFub.transform.rotation);
+                games[i].transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
                 games[i].transform.SetParent(content, false);
             }
         }

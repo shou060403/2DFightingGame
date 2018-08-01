@@ -45,7 +45,7 @@ public class TextGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        RoundText(3, gameText);
+        //RoundText(3, gameText);
         //IssueText(true, gameText);
         //KoText(PLAYER_HP-1, gameText);
     }
