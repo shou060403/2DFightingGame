@@ -4,15 +4,23 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class TextGenerator : MonoBehaviour {
+public class TextGenerator : MonoBehaviour
+{
+    public const int PLAYER_HP = 100;
+
     [SerializeField]
     GameObject canvas;
 
     [SerializeField]
     GameObject windowText;
 
+    [SerializeField]
+    GameObject player;
+    PauseScript pause;
+    bool pauseFlag;
     string[] gameText =
     {
+            "None",
             "Round1",
             "Round2",
             "Final Round",
@@ -23,27 +31,63 @@ public class TextGenerator : MonoBehaviour {
             "YOU LOSE"
     };
     float time;
+    bool startFlag;
     // Use this for initialization
-    void Start () {
-        StartText(gameText);
+    void Start()
+    {
+        time = 0;
+        startFlag = true;
+        pause=player.GetComponent<PauseScript>();
+        pause.pausing = true;
 
     }
 
     // Update is called once per frame
-    void Update () {
-        Debug.Log(time);
+    void Update()
+    {
+        RoundText(3, gameText);
+        //IssueText(true, gameText);
+        //KoText(PLAYER_HP-1, gameText);
     }
-    public void StartText(string[] text)
+    public void RoundText(int num, string[] text)
     {
         time += Time.deltaTime;
-        windowText.GetComponent<Text>().text = text[0];
+        //"Round2"Text表示
+        windowText.GetComponent<Text>().text = text[num];
         if (time >= 1.5f)
         {
-            windowText.GetComponent<Text>().text = text[3];
+            //"Fight"Text表示
+            windowText.GetComponent<Text>().text = text[4];
         }
         if (time >= 3.0f)
         {
+            pause.pausing = false;
+
+            //Text非表示
             windowText.SetActive(false);
         }
+    }
+    public void KoText(int hp, string[] text)
+    {
+        pause.pausing = true;
+        //HPがMAXの時に倒すor倒されると"PerfectK.O."
+        if (hp >= PLAYER_HP)
+        {
+            windowText.GetComponent<Text>().text = text[6];
+        }
+        //どちらかのHPが0になった時に"K.O."
+        else
+        {
+            windowText.GetComponent<Text>().text = text[5];
+        }
+    }
+    public void IssueText(bool num,string[] text)
+    {
+        if(num)
+        {
+            windowText.GetComponent<Text>().text = text[7];
+        }
+        if (!num)
+            windowText.GetComponent<Text>().text = text[8];
     }
 }

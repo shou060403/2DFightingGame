@@ -14,6 +14,7 @@ public class HPDirectorScript : MonoBehaviour {
     private int nowHP;
     private int moveHP;
 
+
 	// Use this for initialization
 	void Start ()
     {
@@ -46,6 +47,8 @@ public class HPDirectorScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+
+
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             hitDmage(100);

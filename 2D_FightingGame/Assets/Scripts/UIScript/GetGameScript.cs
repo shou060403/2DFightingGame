@@ -8,48 +8,73 @@ public class GetGameScript : MonoBehaviour {
     [SerializeField]
     private Image gameFub;
 
-    Vector3 fubTranse = new Vector3(-75, 55, 0);
+    Vector3 fubTranse1 = new Vector3(-65, 85, 0);
+    Vector3 fubTranse2 = new Vector3(55, 85, 0);
 
     //ラウンド数
     [SerializeField]
     private int gameNum;
-    private Image[] game;
+    private Image[] game_P1;
+    private Image[] game_P2;
 
     //画像
     [SerializeField]
     private Sprite winImage;
 
     int wins = 0;
+    [SerializeField]
+    int interval = 20;
 
 	// Use this for initialization
 	void Start ()
     {
+        game_P1 = new Image[gameNum];
+        game_P2 = new Image[gameNum];
+
+        //ラウンド数設定
+        SetGame(game_P1, fubTranse1, interval);
+        SetGame(game_P2, fubTranse2, -interval);
+    }
+
+    // Update is called once per frame
+    void Update ()
+    {
+        //勝利ラウンド取得
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            GetGame(game_P1);
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            GetGame(game_P2);
+        }
+    }
+
+    //ラウンド数設定関数
+    void SetGame(Image[] games,Vector3 initPos, int interval)
+    {
         RectTransform content = GameObject.Find("Canvas/Content").GetComponent<RectTransform>();
-        game = new Image[gameNum];
 
         if (gameFub != null)
         {
             for (int i = 0; i < gameNum; i++)
             {
-                game[i] = (Image)Instantiate(gameFub, fubTranse - new Vector3(i * 20, 0, 0), gameFub.transform.rotation);
-                game[i].transform.SetParent(content, false);
+                games[i] = (Image)Instantiate(gameFub, initPos - new Vector3(i * interval, 0, 0), gameFub.transform.rotation);
+                games[i].transform.SetParent(content, false);
             }
         }
-	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-        if(Input.GetKeyDown(KeyCode.Q))
-        {
-            wins++;
-        }
+    }
 
+    //勝利ラウンド取得関数
+    void GetGame(Image[] games)
+    {
+        wins++;
         for (int i = 0; i < wins; i++)
         {
             if (wins <= gameNum)
             {
-                game[i].sprite = winImage;
+                games[i].sprite = winImage;
             }
         }
     }

@@ -426,12 +426,12 @@ Prefab:
     - target: {fileID: 224533886915364122, guid: 794b1d5412d25e244b1532d2f52053ae,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 250
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 224533886915364122, guid: 794b1d5412d25e244b1532d2f52053ae,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 120
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 224533886915364122, guid: 794b1d5412d25e244b1532d2f52053ae,
         type: 2}
@@ -471,6 +471,46 @@ Prefab:
     - target: {fileID: 1279746995359362, guid: 794b1d5412d25e244b1532d2f52053ae, type: 2}
       propertyPath: m_Name
       value: GameText
+      objectReference: {fileID: 0}
+    - target: {fileID: 114423051455309086, guid: 794b1d5412d25e244b1532d2f52053ae,
+        type: 2}
+      propertyPath: m_FontData.m_FontSize
+      value: 130
+      objectReference: {fileID: 0}
+    - target: {fileID: 114423051455309086, guid: 794b1d5412d25e244b1532d2f52053ae,
+        type: 2}
+      propertyPath: m_FontData.m_MaxSize
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 114423051455309086, guid: 794b1d5412d25e244b1532d2f52053ae,
+        type: 2}
+      propertyPath: m_FontData.m_MinSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114423051455309086, guid: 794b1d5412d25e244b1532d2f52053ae,
+        type: 2}
+      propertyPath: m_FontData.m_FontStyle
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114423051455309086, guid: 794b1d5412d25e244b1532d2f52053ae,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114423051455309086, guid: 794b1d5412d25e244b1532d2f52053ae,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114423051455309086, guid: 794b1d5412d25e244b1532d2f52053ae,
+        type: 2}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114423051455309086, guid: 794b1d5412d25e244b1532d2f52053ae,
+        type: 2}
+      propertyPath: m_Material
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 794b1d5412d25e244b1532d2f52053ae, type: 2}
