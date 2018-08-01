@@ -6,7 +6,6 @@ using GamepadInput;
 
 public class PlayerController : MonoBehaviour
 {
-
     //移動スピード
     public float speed = 0.1f;
     //重力
@@ -40,19 +39,36 @@ public class PlayerController : MonoBehaviour
     //ジャンプをしてから地面につかない間
     int jumpTime = 10;
     int jumpCount = 0;
+    //1Pか2Pか
+    public int controller = 1;
 
-    public int controller = 0;
-
+    //ダメージ
     public int damage = 0;
+    //各ダメージまとめ
+    public int[] attackDamage = { 600, 900, 700, 800 }; 
 
-    public int direction = 0;
+    enum attack
+    {
+        punch,
+        kick,
+        crouchKick,
+        jumpKick
+    };
+
+    //体力
+    public int hp = 10000;
+
+    //向いている方向
+    int direction = 0;
+    //相手
     GameObject enemy;
+    //方向キー
+    int inputDKey;
+    int inputDKeyOld;
 
-    public int inputDKey;
-    public int inputDKeyOld;
-
+    //入力履歴,textはそれを表示する
     public Text text;
-    public List<string> history = new List<string>();
+    List<string> history = new List<string>();
 
     //new BoxCollider2D collider;
 
@@ -61,22 +77,30 @@ public class PlayerController : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         //collider = GetComponent<BoxCollider2D>();
+        //コマンドのリセット
         history.Clear();
         for (int i = 0; i < commandCount; i++)
         {
             history.Add("");
         }
+
         inputDKey = 5;
         inputDKeyOld = inputDKey;
+        //オブジェクト名から相手を決める
         if(controller == 1) enemy = GameObject.Find("player2");
         else if(controller == 2) enemy = GameObject.Find("player1");
+
+        if(enemy == null)
+        {
+            enemy = GameObject.Find("Main Camera");
+        }
 
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        //向きを決める
         if (enemy.transform.position.x >= transform.position.x)
         {
             direction = 1;
@@ -96,49 +120,26 @@ public class PlayerController : MonoBehaviour
         bool punchKey = false;
         bool kickKey = false;
 
-        ////キー操作検知用
-        //float a = 0;
-        //if(Input.GetAxisRaw("Horizontal1P") != 0.0f)
-        //{
-        //    a = Input.GetAxis("Horizontal1P");
-        //    int b = 0;
-        //}
-
         //フリーズしている状態だったらキー動作をしない
         if (!freeze)
         {
-            //// 右・左
-            //x = Input.GetAxisRaw("Horizontal1P");
-            //x += Input.GetAxisRaw("HorizontalDPad1P") * 1000;
-            //// 上・下
-            //y = Input.GetAxisRaw("Vertical1P");
-            //y += Input.GetAxisRaw("VerticalDPad1P") * 1000;
-
-            ////パンチ
-            //punchKey = Input.GetButtonDown("PunchButton1P");
-            ////キック
-            //kickKey = Input.GetButtonDown("KickButton1P");
-
+            //1P
             if(controller == 1)
             {
                 // 右・左
                 x = GamePad.GetAxis(GamePad.Axis.LeftStick, GamePad.Index.One).x;
                 x += GamePad.GetAxis(GamePad.Axis.Dpad, GamePad.Index.One).x * 1000;
-                //x = Input.GetAxisRaw("Horizontal1P");
-                //x += Input.GetAxisRaw("HorizontalDPad1P") * 1000;
+
                 // 上・下
                 y = GamePad.GetAxis(GamePad.Axis.LeftStick, GamePad.Index.One).y;
                 y += GamePad.GetAxis(GamePad.Axis.Dpad, GamePad.Index.One).y * 1000;
-                //y = Input.GetAxisRaw("Vertical1P");
-                //y += Input.GetAxisRaw("VerticalDPad1P") * 1000;
 
                 //パンチ
                 punchKey = GamePad.GetButtonDown(GamePad.Button.A, GamePad.Index.One);
-                //punchKey = Input.GetButtonDown("PunchButton1P");
                 //キック
                 kickKey  = GamePad.GetButtonDown(GamePad.Button.X, GamePad.Index.One);
-                //kickKey = Input.GetButtonDown("KickButton1P");
             }
+            //2P
             else if (controller == 2)
             {
                 // 右・左
@@ -155,6 +156,7 @@ public class PlayerController : MonoBehaviour
                 kickKey = GamePad.GetButtonDown(GamePad.Button.X, GamePad.Index.Two);
             }
 
+            //向いている向きで方向キーを変える(左右反転)
             if (direction == 1)
             {
                 if (x < -0.4f && y < -0.5f) inputDKey = 1;
@@ -212,8 +214,8 @@ public class PlayerController : MonoBehaviour
                 if (inputDKey >= 7) state = "Jump";
                 if (inputDKey <= 3) state = "Crouch";
                 //パンチ、キックの入力
-                if (punchKey && !animator.GetBool("Punch") && !animator.GetBool("Kick")) state = "FCPunch";
-                if (kickKey && !animator.GetBool("Punch") && !animator.GetBool("Kick")) state = "FCKick";
+                if (punchKey && !animator.GetBool("Punch") && !animator.GetBool("Kick")) state = "FPunch";
+                if (kickKey && !animator.GetBool("Punch") && !animator.GetBool("Kick")) state = "FKick";
 
                 int move = 0;
                 if (direction == 1)
@@ -242,16 +244,16 @@ public class PlayerController : MonoBehaviour
                 gameObject.transform.position = new Vector3(gameObject.transform.position.x, -4.2f, gameObject.transform.position.z);
                 //キック
                 //if (Input.GetKeyDown(KeyCode.Z) && !animator.GetBool("Punch") && !animator.GetBool("Kick")) state = "FCPunch";
-                if (punchKey && !animator.GetBool("Punch") && !animator.GetBool("Kick")) state = "FCKick";
-                if (kickKey && !animator.GetBool("Punch") && !animator.GetBool("Kick")) state = "FCKick";
+                if (punchKey && !animator.GetBool("Punch") && !animator.GetBool("Kick")) state = "CKick";
+                if (kickKey && !animator.GetBool("Punch") && !animator.GetBool("Kick")) state = "CKick";
 
                 if (inputDKey >= 4) state = "Stand";
                 break;
             case "Jump":
                 jumpCount++;
                 break;
-            //立ち、しゃがみパンチ
-            case "FCPunch":
+            //立ちパンチ
+            case "FPunch":
                 if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1 && animator.GetBool("Punch") && !animator.GetBool("Kick"))
                 {
                     animator.SetBool("Punch", false);
@@ -260,17 +262,41 @@ public class PlayerController : MonoBehaviour
 
                 animator.SetBool("Punch", true);
                 finalMove = new Vector3(0, 0, 0);
-                damage = 30;
+                damage = attackDamage[(int)attack.punch];
                 break;
-            //立ち、しゃがみキック
-            case "FCKick":
+            //しゃがみパンチ
+            case "CPunch":
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1 && animator.GetBool("Punch") && !animator.GetBool("Kick"))
+                {
+                    animator.SetBool("Punch", false);
+                    state = "Stand";
+                }
+
+                animator.SetBool("Punch", true);
+                finalMove = new Vector3(0, 0, 0);
+                damage = attackDamage[(int)attack.punch];
+                break;
+            //立ちキック
+            case "FKick":
                 if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1 && animator.GetBool("Kick") && !animator.GetBool("Punch"))
                 {
                     animator.SetBool("Kick", false);
                     state = "Stand";
                 }
 
-                damage = 60;
+                damage = attackDamage[(int)attack.kick];
+                animator.SetBool("Kick", true);
+                finalMove = new Vector3(0, 0, 0);
+                break;
+            //しゃがみキック
+            case "CKick":
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1 && animator.GetBool("Kick") && !animator.GetBool("Punch"))
+                {
+                    animator.SetBool("Kick", false);
+                    state = "Stand";
+                }
+
+                damage = attackDamage[(int)attack.crouchKick];
                 animator.SetBool("Kick", true);
                 finalMove = new Vector3(0, 0, 0);
                 break;
@@ -334,7 +360,7 @@ public class PlayerController : MonoBehaviour
             if (kickKey && !animator.GetBool("Punch") && !animator.GetBool("Kick"))
             {
                 animator.SetBool("Kick", true);
-                damage = 50;
+                damage = attackDamage[(int)attack.jumpKick];
             }
         }
         else
@@ -349,50 +375,6 @@ public class PlayerController : MonoBehaviour
         Vector3 finalPos = finalMove + gameObject.transform.position;
         gameObject.transform.position = finalPos;
 
-        ////入力
-        //if(inputDKey != inputDKeyOld)
-        //{
-        //    switch(inputDKey)
-        //    {
-        //        case 1:
-        //            history.RemoveAt(0);
-        //            history.Add("↙");
-        //            break;
-        //        case 2:
-        //            history.RemoveAt(0);
-        //            history.Add("↓");
-        //            break;
-        //        case 3:
-        //            history.RemoveAt(0);
-        //            history.Add("↘");
-        //            break;
-        //        case 4:
-        //            history.RemoveAt(0);
-        //            history.Add("←");
-        //            break;
-        //        case 5:
-        //            //history.RemoveAt(0);
-        //            //history.Add("N");
-        //            break;
-        //        case 6:
-        //            history.RemoveAt(0);
-        //            history.Add("→");
-        //            break;
-        //        case 7:
-        //            history.RemoveAt(0);
-        //            history.Add("↖");
-        //            break;
-        //        case 8:
-        //            history.RemoveAt(0);
-        //            history.Add("↑");
-        //            break;
-        //        case 9:
-        //            history.RemoveAt(0);
-        //            history.Add("↗");
-        //            break;
-
-        //    }
-        //}
         //入力
         switch (inputDKey)
         {
@@ -432,7 +414,6 @@ public class PlayerController : MonoBehaviour
                 history.RemoveAt(0);
                 history.Add("↗");
                 break;
-
         }
 
         if (punchKey)
@@ -445,23 +426,23 @@ public class PlayerController : MonoBehaviour
             history.RemoveAt(0);
             history.Add("K");
         }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            string test = "";
-            for (int i = 0; i < 30; i++)
-            {
-                test += history[i];
-            }
-            Debug.Log(test);
-            //if (historyCount >= 30) history.RemoveAt(0);
-            //historyCount++;
-        }
 
         for (int i = 0; i < commandCount; i++)
         {
             text.text += history[i];
         }
 
+        SpecialMove();
+
+        inputDKeyOld = inputDKey;
+
+    }
+
+    /// <summary>
+    /// 必殺技コマンドの処理
+    /// </summary>
+    private void SpecialMove()
+    {
 
         if (state != "Special")
         {
@@ -491,10 +472,7 @@ public class PlayerController : MonoBehaviour
                     }
                 }
             }
-        }
 
-        if (state != "Special")
-        {
             string[] hadoken = new string[4];
             hadoken[0] = "↓";
             hadoken[1] = "↘";
@@ -522,32 +500,6 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-
-
-        //if (history[6] == "→" && history[7] == "↓" && history[8] == "↘" && history[9] == "P" && state != "Special")
-        //{
-        //    specialState = "Syoryuken";
-        //    state = "Special";
-        //    history.Clear();
-        //    for (int i = 0; i < 10; i++)
-        //    {
-        //        history.Add("");
-        //    }
-        //}
-
-        //if (history[6] == "↓" && history[7] == "↘" && history[8] == "→" && history[9] == "P" && state != "Special")
-        //{
-        //    specialState = "Hadoken";
-        //    state = "Special";
-        //    history.Clear();
-        //    for (int i = 0; i < 10; i++)
-        //    {
-        //        history.Add("");
-        //    }
-        //}
-
-        inputDKeyOld = inputDKey;
-
     }
 
 }
