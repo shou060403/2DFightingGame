@@ -63,12 +63,12 @@ public class HPDirectorScript : MonoBehaviour {
     //攻撃を食らったなら
     void OnTriggerEnter2D(Collider2D collision)
     {
-        hitFlag = true;
         //サンドバッグなら(仮※仕様によって要変更)
         if (this.gameObject.name == "Sandbag")
         {
             if (collision.gameObject.tag == "Attack1")
             {
+                hitFlag = true;
                 hitDmage(script.damage);
             }
         }
