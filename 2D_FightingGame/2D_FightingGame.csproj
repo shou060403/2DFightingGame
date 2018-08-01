@@ -231,6 +231,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\GamePadInput\Demo\DemoScript.cs" />
+    <Compile Include="Assets\GamePadInput\GamePad.cs" />
     <Compile Include="Assets\Scripts\AnimScript\ColliderEvent.cs" />
     <Compile Include="Assets\Scripts\ComboScript.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
