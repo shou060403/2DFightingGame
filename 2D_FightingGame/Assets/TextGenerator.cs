@@ -32,22 +32,42 @@ public class TextGenerator : MonoBehaviour
     };
     float time;
     bool startFlag;
+    int gameCount;
+
     // Use this for initialization
     void Start()
     {
         time = 0;
+        gameCount = 1;
         startFlag = true;
         pause=player.GetComponent<PauseScript>();
-        pause.pausing = true;
-
+        pause.pausing = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //RoundText(3, gameText);
+        if(startFlag)
+        {
+            NowRound(gameCount);
+        }
         //IssueText(true, gameText);
         //KoText(PLAYER_HP-1, gameText);
+    }
+    public void NowRound(int count)
+    {
+        switch(count)
+        {
+            case 1:
+                RoundText(count, gameText);
+                break;
+            case 2:
+                RoundText(count, gameText);
+                break;
+            case 3:
+                RoundText(count, gameText);
+                break;
+        }
     }
     public void RoundText(int num, string[] text)
     {
@@ -62,6 +82,7 @@ public class TextGenerator : MonoBehaviour
         if (time >= 3.0f)
         {
             pause.pausing = false;
+            startFlag = false;
 
             //Text非表示
             windowText.SetActive(false);

@@ -64,7 +64,7 @@ public class HPDirectorScript : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D collision)
     {
         //サンドバッグなら(仮※仕様によって要変更)
-        if (this.gameObject.name == "Sandbag")
+        if (this.gameObject.name == "player2")
         {
             if (collision.gameObject.tag == "Attack1")
             {
