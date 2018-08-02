@@ -21,7 +21,7 @@ public class GetGameScript : MonoBehaviour {
     [SerializeField]
     private Sprite winImage;
 
-    int wins = 0;
+    int wins1 = 0, wins2 = 0;
     [SerializeField]
     int interval = 30;
 
@@ -40,14 +40,16 @@ public class GetGameScript : MonoBehaviour {
     void Update ()
     {
         //勝利ラウンド取得
-        if(Input.GetKeyDown(KeyCode.Q))
+        if(Input.GetKeyDown(KeyCode.I))
         {
-            GetGame(game_P1);
+            wins1++;
+            GetGame(game_P1, wins1);
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.O))
         {
-            GetGame(game_P2);
+            wins2++;
+            GetGame(game_P2, wins2);
         }
     }
 
@@ -68,15 +70,23 @@ public class GetGameScript : MonoBehaviour {
     }
 
     //勝利ラウンド取得関数
-    void GetGame(Image[] games)
+    void GetGame(Image[] games,int wins)
     {
-        wins++;
         for (int i = 0; i < wins; i++)
         {
             if (wins <= gameNum)
             {
                 games[i].sprite = winImage;
             }
+        }
+    }
+
+    public void ResetGame(Sprite image)
+    {
+        for (int i = 0; i < gameNum; i++)
+        {
+            game_P1[i].sprite = image;
+            game_P2[i].sprite = image;
         }
     }
 }

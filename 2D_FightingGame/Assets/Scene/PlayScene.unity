@@ -1766,6 +1766,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player1: {fileID: 2118730343}
   player2: {fileID: 1034963093}
+  image: {fileID: 21300000, guid: c8edadb8ae3ebd8438b325dfbabdccfb, type: 3}
 --- !u!114 &998294840
 MonoBehaviour:
   m_ObjectHideFlags: 0

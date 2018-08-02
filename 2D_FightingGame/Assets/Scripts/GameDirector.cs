@@ -12,6 +12,12 @@ public class GameDirector : MonoBehaviour {
     HPDirectorScript HP1, HP2;
     Vector3 initPos1, initPos2;
 
+    ComboScript comboScript;
+    GetGameScript gameScript;
+
+    [SerializeField]
+    Sprite image;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -20,11 +26,15 @@ public class GameDirector : MonoBehaviour {
 
         initPos1 = player1.transform.position;
         initPos2 = player2.transform.position;
-	}
+
+        comboScript = GetComponent<ComboScript>();
+        gameScript = GetComponent<GetGameScript>();
+    }
 	
 	// Update is called once per frame
 	void Update ()
     {
+        //情報をリセット
 		if(Input.GetKey(KeyCode.R))
         {
             HP1.Initialise();
@@ -37,6 +47,9 @@ public class GameDirector : MonoBehaviour {
 
             player1.transform.position = initPos1;
             player2.transform.position = initPos2;
+
+            comboScript.NoneCombo();
+            gameScript.ResetGame(image);
         }
 	}
 
