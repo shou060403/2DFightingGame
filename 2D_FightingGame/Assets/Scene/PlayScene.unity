@@ -453,7 +453,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &157290926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1766,6 +1766,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player1: {fileID: 2118730343}
   player2: {fileID: 1034963093}
+  image: {fileID: 21300000, guid: c8edadb8ae3ebd8438b325dfbabdccfb, type: 3}
 --- !u!114 &998294840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1956,7 +1957,7 @@ GameObject:
   - component: {fileID: 1034963097}
   - component: {fileID: 1034963098}
   m_Layer: 0
-  m_Name: Sandbag
+  m_Name: player2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5481,7 +5482,7 @@ GameObject:
   - component: {fileID: 2118730348}
   - component: {fileID: 2118730350}
   m_Layer: 0
-  m_Name: player
+  m_Name: player1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5657,9 +5658,9 @@ MonoBehaviour:
   jumpingRecovery: 3
   hitStop: 4
   commandCount: 10
+  controller: 1
   damage: 0
   direction: 0
-  enemyPos: {x: 0, y: 0, z: 0}
   inputDKey: 0
   inputDKeyOld: 0
   text: {fileID: 1361556274}

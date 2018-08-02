@@ -42,8 +42,13 @@ public class ComboScript : MonoBehaviour {
     }
 
 
-    void NoneCombo()
-    {
 
+    public void NoneCombo()
+    {
+        combo_P1 = 0;
+        combo_P2 = 0;
+
+        text_P1.text = "";
+        text_P2.text = "";
     }
 }
