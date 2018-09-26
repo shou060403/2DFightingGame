@@ -40,7 +40,7 @@ public class GetGameScript : MonoBehaviour {
     void Update ()
     {
         //勝利ラウンド取得
-        if(Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.I))
         {
             wins1++;
             GetGame(game_P1, wins1);
@@ -70,7 +70,7 @@ public class GetGameScript : MonoBehaviour {
     }
 
     //勝利ラウンド取得関数
-    void GetGame(Image[] games,int wins)
+    public void GetGame(Image[] games,int wins)
     {
         for (int i = 0; i < wins; i++)
         {
@@ -88,5 +88,10 @@ public class GetGameScript : MonoBehaviour {
             game_P1[i].sprite = image;
             game_P2[i].sprite = image;
         }
+    }
+    public int[] GetWins()
+    {
+        int[] num = { wins1, wins2 };
+        return num;
     }
 }

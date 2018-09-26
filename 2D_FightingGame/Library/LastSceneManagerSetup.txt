@@ -1,16 +1,4 @@
 sceneSetups:
-<<<<<<< HEAD
-<<<<<<< HEAD
-- path: Assets/GamePadInput/Demo/Demo.unity
-=======
-<<<<<<< HEAD
-- path: Assets/Scene/TitleScene.unity
-=======
-- path: Assets/Scene/Test.unity
->>>>>>> fa1e06fa9edca67a1d23195d566de98e6edb233c
->>>>>>> Round
-=======
 - path: Assets/Scene/PlayScene.unity
->>>>>>> 00c484ec8550626273db3077ae0635dcbbddf4a2
   isLoaded: 1
   isActive: 1

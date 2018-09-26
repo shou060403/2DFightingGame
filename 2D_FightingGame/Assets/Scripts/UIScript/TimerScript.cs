@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TimerScript : MonoBehaviour {
+public class TimerScript : MonoBehaviour
+{
 
-    private float timer = 60;
+    private float timer = 99;
     private Text text;
 
 	// Use this for initialization
@@ -23,4 +24,12 @@ public class TimerScript : MonoBehaviour {
         }
         text.text = timer.ToString("F0");
 	}
+    public float GetTimer()
+    {
+        return timer;
+    }
+    public void ResetTimer()
+    {
+        timer = 99;
+    }
 }

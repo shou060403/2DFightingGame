@@ -165,6 +165,7 @@ Assets/GamePadInput/Demo/DemoScript.cs
 Assets/GamePadInput/GamePad.cs
 Assets/Scripts/AnimScript/ColliderEvent.cs
 Assets/Scripts/ComboScript.cs
+Assets/Scripts/GameDirector.cs
 Assets/Scripts/PauseScript.cs
 Assets/Scripts/PlayerController.cs
 Assets/Scripts/SceneManagement.cs

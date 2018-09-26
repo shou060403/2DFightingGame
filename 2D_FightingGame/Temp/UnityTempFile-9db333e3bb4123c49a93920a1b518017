@@ -165,11 +165,14 @@ Assets/GamePadInput/Demo/DemoScript.cs
 Assets/GamePadInput/GamePad.cs
 Assets/Scripts/AnimScript/ColliderEvent.cs
 Assets/Scripts/ComboScript.cs
+Assets/Scripts/GameDirector.cs
+Assets/Scripts/PauseScript.cs
 Assets/Scripts/PlayerController.cs
 Assets/Scripts/SceneManagement.cs
 Assets/Scripts/UIScript/GetGameScript.cs
 Assets/Scripts/UIScript/HPDirectorScript.cs
 Assets/Scripts/UIScript/TimerScript.cs
+Assets/TextGenerator.cs
 -r:C:\Users\s162211\Desktop\Editor\Data\Mono\lib\mono\unity\System.Runtime.Serialization.dll
 -r:C:\Users\s162211\Desktop\Editor\Data\Mono\lib\mono\unity\System.Xml.Linq.dll
 -r:C:\Users\s162211\Desktop\Editor\Data\Mono\lib\mono\unity\UnityScript.dll
