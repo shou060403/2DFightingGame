@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class GetGameScript : MonoBehaviour {
+    public const int NONE = 0;
+    public const int PLAYER1_WIN = 1;
+    public const int PLAYER2_WIN = 2;
 
     [SerializeField]
     private Image gameFub;
@@ -21,15 +24,19 @@ public class GetGameScript : MonoBehaviour {
     [SerializeField]
     private Sprite winImage;
 
-    int wins1 = 0, wins2 = 0;
+    public static int wins1 = 0, wins2 = 0;
     [SerializeField]
     int interval = 30;
 
-	// Use this for initialization
-	void Start ()
+    TextGenerator textScript;
+
+    // Use this for initialization
+    void Start ()
     {
         game_P1 = new Image[gameNum];
         game_P2 = new Image[gameNum];
+
+        textScript = GameObject.Find("TextFactory").GetComponent<TextGenerator>();
 
         //ラウンド数設定
         SetGame(game_P1, fubTranse1, interval);
@@ -39,17 +46,24 @@ public class GetGameScript : MonoBehaviour {
     // Update is called once per frame
     void Update ()
     {
+        //Debug.Log(textScript.PauseFlag());
+        GetGame(game_P1, wins1);
+        GetGame(game_P2, wins2);
         //勝利ラウンド取得
-        if (Input.GetKeyDown(KeyCode.I))
+        switch (textScript.WinChar)
         {
-            wins1++;
-            GetGame(game_P1, wins1);
-        }
-
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            wins2++;
-            GetGame(game_P2, wins2);
+            case 1:
+                wins2++;
+                GetGame(game_P2, wins2);
+                textScript.WinChar = 0;
+                break;
+            case 2:
+                wins1++;
+                GetGame(game_P1, wins1);
+                textScript.WinChar = 0;
+                break;
+            default:
+                break;
         }
     }
 
@@ -89,9 +103,18 @@ public class GetGameScript : MonoBehaviour {
             game_P2[i].sprite = image;
         }
     }
-    public int[] GetWins()
+    public int GetPlayerWin()
     {
-        int[] num = { wins1, wins2 };
-        return num;
+        int[] wins = { wins1, wins2 };
+        int playerWin = NONE;
+        if (wins[0] >= 2)
+        {
+            playerWin = PLAYER1_WIN;
+        }
+        if (wins[1] >= 2)
+        {
+            playerWin = PLAYER2_WIN;
+        }
+        return playerWin;
     }
 }

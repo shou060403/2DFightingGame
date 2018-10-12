@@ -51,8 +51,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\FadeScript.cs" />
      <Compile Include="Assets\GamePadInput\Demo\DemoScript.cs" />
      <Compile Include="Assets\GamePadInput\GamePad.cs" />
+     <Compile Include="Assets\GetCenterPoint.cs" />
+     <Compile Include="Assets\ItweenCamera.cs" />
      <Compile Include="Assets\Scripts\AnimScript\ColliderEvent.cs" />
      <Compile Include="Assets\Scripts\ComboScript.cs" />
      <Compile Include="Assets\Scripts\GameDirector.cs" />
@@ -99,6 +102,10 @@
  <Reference Include="UnityEngine.StandardEvents">
  <HintPath>C:/Users/s162211/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
  </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{2AB86097-D887-1A7A-4847-CAB0511807D2}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

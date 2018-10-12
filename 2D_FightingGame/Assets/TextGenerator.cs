@@ -12,6 +12,10 @@ public class TextGenerator : MonoBehaviour
     public const int PLAYER1 = 0;
     public const int PLAYER2 = 1;
 
+    public const int GAME_START = 0;
+    public const int GAME_PLAY = 1;
+    public const int GAME_END = 2;
+
     // 制限時間
     public const float MAX_TIMER = 99;
     // Textを表示するcanvas
@@ -25,10 +29,10 @@ public class TextGenerator : MonoBehaviour
     //=========================================
     // シーン上のプレイヤー1
     [SerializeField]
-    GameObject player1;
+    GameObject playerObj1;
     // シーン上のプレイヤー2
     [SerializeField]
-    GameObject player2;
+    GameObject playerObj2;
     [SerializeField]
     GameObject timerObj;
     //=========================================
@@ -36,27 +40,27 @@ public class TextGenerator : MonoBehaviour
     [SerializeField]
     GameObject gameDirecter;
     [SerializeField]
-    Sprite spr;
+    GameObject fadePanel;
 
     GameObject gamebase;
     HPDirectorScript hp1;
     HPDirectorScript hp2;
     PlayerController pause;
     TimerScript timer;
-    GetGameScript gameReset;
+    GetGameScript getGame;
+    GameDirector directer;
+    FadeScript fade;
     // ラウンド数
-    int gameCount;
-    // 勝利数
-    int[] wins = { 0, 0 };
+    public static int gameCount = 1;
     // text表示用
     float time;
     // text非表示用
-    float exitTime;
+    float winTime;
+    // 基盤となる時間
+    float baseTime;
     // ゲームが始まっているか
     bool startFlag;
     // ゲームが終わっているか
-    bool endFlag;
-    bool pauseFlag;
     // ゲーム内のテキスト
     string[] gameText =
     {
@@ -71,67 +75,81 @@ public class TextGenerator : MonoBehaviour
             "YOU LOSE"
     };
 
+    //勝利プレイヤー判定用
+    int winChar;
+    float test;
+    bool gameSet;
+    bool flag;
     // Use this for initialization
     void Start()
     {
         time = 0;
-        exitTime = 0;
-        gameCount = 1;
-        startFlag = true;
-        endFlag = true;
-        pauseFlag = true;
-
-        pause=player1.GetComponent<PlayerController>();
-        hp1 = player1.GetComponent<HPDirectorScript>();
-        hp2 = player2.GetComponent<HPDirectorScript>();
+        winTime = 0;
+        baseTime = 0;
+        gameSet = true;
+        flag = true;
+        pause = playerObj1.GetComponent<PlayerController>();
+        hp1 = playerObj1.GetComponent<HPDirectorScript>();
+        hp2 = playerObj2.GetComponent<HPDirectorScript>();
         timer = timerObj.GetComponent<TimerScript>();
-        gameReset = gameDirecter.GetComponent<GetGameScript>();
-        Debug.Log(pause);
+        getGame = gameDirecter.GetComponent<GetGameScript>();
+        directer = gameDirecter.GetComponent<GameDirector>();
+        fade = fadePanel.GetComponent<FadeScript>();
+        winChar = 0;
+        test = 60.0f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (timer.GetTimer() == MAX_TIMER)
-            startFlag = true;
-        // ラウンド開始時一度だけ
-        if (startFlag)
+        fade.FadeInFlag();
+
+        // ゲーム開始前(ラウンド開始時)
+        if (directer.GetGameState() == GAME_START)
         {
             NowRound(gameCount);
         }
-        // ポーズ中であれば
-        if(pauseFlag)
+        // プレイ中(制限時間)
+        if (directer.GetGameState() == GAME_PLAY)
         {
-            // プレイヤー2の体力が0になったら
-            if (hp2.GetNowHP() <= 0)
+            // 制限時間をうごかす
+            timer.SwithGameTimer();
+            // プレイヤー1が勝ったら
+            if (directer.GameSet() == 1)
             {
                 setRound(PLAYER1, hp1.GetNowHP());
-                exitTime += Time.deltaTime;
+                winChar = 2;
+                baseTime = timer.GetTimer();
+                directer.GameState(GAME_END);
             }
-            // プレイヤー1の体力が0になったら
-            if (hp1.GetNowHP() <= 0)
+            // プレイヤー2が勝ったら
+            if (directer.GameSet() == 2)
             {
                 setRound(PLAYER2, hp2.GetNowHP());
-                exitTime += Time.deltaTime;
+                winChar = 1;
+                baseTime = timer.GetTimer();
+                directer.GameState(GAME_END);
             }
-            // 数秒置いてから文字をフェードアウト
-            if (exitTime >= 2.0f)
+        }
+        // ゲーム終了時(決着が着いた時)
+        if (directer.GetGameState() == GAME_END)
+        {
+            // 時間経過でテキストを非表示に
+            if (timer.GetTimer() - baseTime >= 2.0f)
             {
                 // Textを非表示に     -> 今後演出を追加する予定
                 canvasText.GetComponent<Text>().text = "";
-                //プレイヤーの動きを再開させる
-                //pause.enabled = !pause.enabled;
-                pauseFlag = false;
-            }
-        }
-        //今後実装
-        //IssueText(true, gameText);
+                pause.enabled = true;                AddGameCount(gameCount);
 
+                gameSet = false;
+            }
+            // いずれかのプレイヤーが勝利した時
+            WinPlayer();
+        }
     }
     //========================================================================================
     //                                 関数
     //========================================================================================
-
     /// <summary>
     /// ラウンド終了時の処理
     /// </summary>
@@ -139,22 +157,10 @@ public class TextGenerator : MonoBehaviour
     /// <param name="hp"></param>
     void setRound(int num,int hp)
     {
-        // 決着が着いた時
-        if(endFlag)
-        {
-            wins[num]++;
-            endFlag = false;
-        }
+        // KOのテキストを表示
         KoText(hp, gameText);
-    }
-    /// <summary>
-    /// 勝利数を取得
-    /// </summary>
-    /// <param name="num"></param>
-    /// <returns></returns>
-    public int GetWinner(int num)
-    {
-        return wins[num];
+        // 制限時間を停止
+        timer.SwithGameTimer();
     }
     /// <summary>
     /// 現在のラウンド表記
@@ -162,18 +168,7 @@ public class TextGenerator : MonoBehaviour
     /// <param name="count"></param>
     public void NowRound(int count)
     {
-        switch(count)
-        {
-            case 1:
-                RoundText(count, gameText);
-                break;
-            case 2:
-                RoundText(count, gameText);
-                break;
-            case 3:
-                RoundText(count, gameText);
-                break;
-        }
+        RoundText(count, gameText);
     }
     /// <summary>
     /// ラウンド開始時のText表示
@@ -185,44 +180,42 @@ public class TextGenerator : MonoBehaviour
         time += Time.deltaTime;
         //"Round"Text表示
         canvasText.GetComponent<Text>().text = text[num];
-        if (time >= 1.5f)
+        if (time >= 1.5f) 
         {
             //"Fight"Text表示
             canvasText.GetComponent<Text>().text = text[4];
         }
         if (time >= 3.0f)
         {
-            // プレイヤーの動きを止める
-            pause.enabled = !pause.enabled;
-            Debug.Log(pause);
+            // プレイヤーを操作可能状態に
+            pause.enabled = true;
 
             //Text非表示
             canvasText.SetActive(false);
-            startFlag = false;
+            directer.GameState(GAME_PLAY);
         }
     }
     /// <summary>
-    /// KOされた時orKOした時にText表示
+    /// KOされた時 or KOした時にText表示
     /// </summary>
     /// <param name="hp"></param>
     /// <param name="text"></param>
     public void KoText(int hp, string[] text)
     {
         // プレイヤーの動きを止める
-        pause.enabled = !pause.enabled;
+        pause.enabled = false;
 
         //HPがMAXの時に倒すor倒されると"PerfectK.O."
         if (hp >= PLAYER_HP)
         {
             canvasText.GetComponent<Text>().text = text[6];
             canvasText.SetActive(true);
-            startFlag = true;
         }
         //どちらかのHPが0になった時に"K.O."
         if (hp <= 0)
         {
             canvasText.GetComponent<Text>().text = text[5];
-            startFlag = true;
+            canvasText.SetActive(true);
         }
     }
     /// <summary>
@@ -240,20 +233,55 @@ public class TextGenerator : MonoBehaviour
         if (!num)
             canvasText.GetComponent<Text>().text = text[8];
     }
-    /// <summary>
-    /// ゲームのリセット
-    /// </summary>
-    /// <param name="start"></param>
-    /// <param name="end"></param>
-    public void ResetGame(bool start,bool end)
+    public int WinChar
     {
-        // ゲームが始まっていて、決着が着いていたら
-        if (start && end)
+        set { winChar = value; }
+        get { return winChar; }
+    }
+
+    public void WinPlayer()
+    {
+        int playerWin = getGame.GetPlayerWin();
+        // プレイヤー1が勝った時
+        if (playerWin == 1)
         {
-            gameReset.ResetGame(spr);
-            timer.ResetTimer();
-            hp1.Initialise();
-            hp2.Initialise();
+            // 勝者の名前を表示する
+            if (timer.GetTimer() - baseTime >= 3.0f)
+            {
+                IssueText(true, gameText);
+            }
+        }
+        // プレイヤー2が勝った時
+        if (playerWin == 2)
+        {
+            // 勝者の名前を表示する
+            if (timer.GetTimer() - baseTime >= 3.0f)
+            {
+                IssueText(true, gameText);
+            }
+        }
+    }
+    public bool GetGameSet()
+    {
+        return gameSet;
+    }
+    void AddGameCount(int cnt)
+    {
+        if(flag)
+        {
+            switch (cnt)
+            {
+                case 1:
+                    gameCount = 2;
+                    flag = false;
+                    break;
+                case 2:
+                    gameCount = 3;
+                    flag = false;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

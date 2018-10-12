@@ -23,8 +23,6 @@ public class SceneManagement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-            SceneChange(SceneName("result"));
 	}
 
     ////----------------------------------------------------------------------
@@ -34,27 +32,10 @@ public class SceneManagement : MonoBehaviour {
     ////!
     ////! @return なし
     ////----------------------------------------------------------------------
-    public void SceneChange(string scene)
-    {
-        SceneManager.LoadScene(scene);
-    }
-    ////----------------------------------------------------------------------
-    ////! @brief シーン名取得
-    ////!
-    ////! @param[in] シーン名称
-    ////!
-    ////!            "title"  --- タイトルシーン
-    ////!            "menu"   --- プレイメニューシーン
-    ////!            "select" --- キャラクターセレクトシーン
-    ////!            "play"   --- プレイシーン
-    ////!            "result" --- リザルトシーン
-    ////!
-    ////! @return なし
-    ////----------------------------------------------------------------------
-    public string SceneName(string name)
+    public void SceneChange(string name)
     {
         string sceneName = "";
-        switch(name)
+        switch (name)
         {
             case "title":
                 sceneName = titleScene;
@@ -73,8 +54,21 @@ public class SceneManagement : MonoBehaviour {
                 break;
         }
 
-        return sceneName;
+        SceneManager.LoadScene(sceneName);
     }
+    ////----------------------------------------------------------------------
+    ////! @brief シーン名取得
+    ////!
+    ////! @param[in] シーン名称
+    ////!
+    ////!            "title"  --- タイトルシーン
+    ////!            "menu"   --- プレイメニューシーン
+    ////!            "select" --- キャラクターセレクトシーン
+    ////!            "play"   --- プレイシーン
+    ////!            "result" --- リザルトシーン
+    ////!
+    ////! @return なし
+    ////----------------------------------------------------------------------
 }
 
 

@@ -6,9 +6,11 @@ using UnityEngine.UI;
 public class TimerScript : MonoBehaviour
 {
 
-    private float timer = 99;
+    private float gameTimer = 99;
+    private float timer = 0;
     private Text text;
 
+    bool stopFlag = false;
 	// Use this for initialization
 	void Start ()
     {
@@ -18,18 +20,39 @@ public class TimerScript : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-		if(timer>=0)
+        // ゲーム内の時間制限用タイマー
+        timer += Time.deltaTime;
+
+        // ゲームが始まっていたら
+        if(stopFlag)
         {
-            timer -= Time.deltaTime;
+            // 制限時間が0でなければ
+            if (gameTimer >= 0)
+            {
+                // 制限時間を減少
+                gameTimer -= Time.deltaTime;
+            }
         }
-        text.text = timer.ToString("F0");
+        text.text = gameTimer.ToString("F0");
 	}
+    // 制限時間を取得
+    public float GetGameTimer()
+    {
+        return gameTimer;
+    }
+    // 現在のゲーム時間を取得
     public float GetTimer()
     {
         return timer;
     }
-    public void ResetTimer()
+    // 制限時間をリセット
+    public void ResetGameTimer()
     {
-        timer = 99;
+        gameTimer = 99;
+    }
+    // 制限時間を減らすかどうかの判断
+    public void SwithGameTimer()
+    {
+        stopFlag = !stopFlag;
     }
 }

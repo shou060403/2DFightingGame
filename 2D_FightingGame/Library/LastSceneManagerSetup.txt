@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scene/PlayScene.unity
+- path: C:/Users/s162211/Desktop/ConbatMaster/CombatMaster/Assets/Scene/TestScene.unity
   isLoaded: 1
   isActive: 1
